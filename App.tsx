@@ -10,6 +10,7 @@ import {
     Dimensions
 } from 'react-native';
 import Card from "./Card";
+import cheerio from 'cheerio'
 
 interface listEle {
     singer: string,
@@ -20,20 +21,17 @@ interface listEle {
     img: string
 }
 
-export default class App extends React.Component<{},{list: Array<listEle>}> {
-    searchText: string;
-
+export default class App extends React.Component<{},{list: Array<listEle>, searchText: string}> {
     constructor(props) {
         super(props);
-        // init var
-        this.searchText = "";
         // state
         this.state = {
-            list: []
+            list: [],
+            searchText: "",
         };
     }
 
-    // componentDidMount(): void {
+    componentDidMount(): void {
         // Test
         // let tmp: Array<listEle> = [
         //     {
@@ -56,19 +54,42 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
         // this.setState({
         //     list: tmp
         // })
-    // }
+    }
 
-    search(value: string) : Array<listEle> {
+    async search(value: string) : Promise<Array<listEle>> {
         let list : Array<listEle> = [];
-        // work
+        // contact string
+        let re = /\W/gi;
+        let url = "https://tunebat.com/Search?q="+value.trim().replace(re,"+");
+        // get page
+        const response = await fetch(url);
+        const $ = cheerio.load(await response.text());
+        // get data
+        $('.searchResultList .searchResultNode a').map( function() {
+            let temp : listEle = {
+                singer: $(".search-artist-name", this).text(),
+                song: $(".search-track-name", this).text(),
+                ke: $(".search-attribute-value", this)[0].children[0].data,
+                camelot: $(".search-attribute-value", this)[1].children[0].data,
+                bpm: Number($(".search-attribute-value", this)[2].children[0].data),
+                img: $("img", this)[0].attribs.src
+            };
+            list.push(temp);
+        });
         return list;
     }
 
-    _onSearch(): void {
+   async  _onSearch() {
         // alert('test')
-        let content : string = "";
+        let content : string = this.state.searchText;
         this.setState({
-            list: this.search(content)
+            list: await this.search(content)
+        });
+    }
+
+    _changeText(value) : void {
+        this.setState({
+            searchText: value
         });
     }
 
@@ -102,7 +123,8 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                 borderRadius: 3,
                 borderColor: "#3B7B9A",
                 marginLeft: 10,
-                marginRight: 10
+                marginRight: 10,
+                paddingLeft: 5,
             },
             main: {
                 width: appWidth-60,
@@ -129,7 +151,9 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                     <View style={[styles.row, styles.head]}>
                         <TextInput
                             style={styles.textInput}
-                            value={this.searchText}
+                            onChangeText={text => this._changeText(text)}
+                            onSubmitEditing={() => this._onSearch()}
+                            value={this.state.searchText}
                         />
                         <Button
                             title="Search"
@@ -144,15 +168,18 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                             this.state.list.length==0?
                                 (<Text>No Resolution</Text>)
                                 :
-                            this.state.list.map(v => (
-                                <Card
-                                    singer={v.singer}
-                                    song={v.song}
-                                    ke={v.ke}
-                                    camelot={v.camelot}
-                                    bpm={v.bpm}
-                                    img={v.img}
-                                />)
+                            this.state.list.map((v,index) => {
+                                return (
+                                        <Card
+                                            singer={v.singer}
+                                            song={v.song}
+                                            ke={v.ke}
+                                            camelot={v.camelot}
+                                            bpm={v.bpm}
+                                            img={v.img}
+                                            key={index}
+                                        />);
+                                }
                             )
                         }
                     </ScrollView>
@@ -162,7 +189,7 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                                 fontSize: 12,
                             }}
                         >
-                            Copyright ® 2020 by DeAnti-
+                            Copyright © 2020 by DeAnti-
                         </Text>
                     </View>
                 </View>
