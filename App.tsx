@@ -33,22 +33,30 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
         };
     }
 
-    componentDidMount(): void {
+    // componentDidMount(): void {
         // Test
-        let tmp: Array<listEle> = [
-            {
-                singer: "ONE OK ROCK",
-                song: "完全感覚Dreamer",
-                ke: "F# Minor",
-                camelot: "11A",
-                bpm: 190,
-                img: "https://i.scdn.co/image/ca7bd85fd772ef5298934bed7a1bdf8ef74c94fb"
-            }
-        ];
-        this.setState({
-            list: tmp
-        })
-    }
+        // let tmp: Array<listEle> = [
+        //     {
+        //         singer: "ONE OK ROCK",
+        //         song: "完全感覚Dreamer",
+        //         ke: "F# Minor",
+        //         camelot: "11A",
+        //         bpm: 190,
+        //         img: "https://i.scdn.co/image/ca7bd85fd772ef5298934bed7a1bdf8ef74c94fb"
+        //     },
+        //     {
+        //         singer: "ONE OK ROCK",
+        //         song: "完全感覚Dreamer",
+        //         ke: "F# Minor",
+        //         camelot: "11A",
+        //         bpm: 190,
+        //         img: "https://i.scdn.co/image/ca7bd85fd772ef5298934bed7a1bdf8ef74c94fb"
+        //     }
+        // ];
+        // this.setState({
+        //     list: tmp
+        // })
+    // }
 
     search(value: string) : Array<listEle> {
         let list : Array<listEle> = [];
@@ -76,14 +84,16 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                 // backgroundColor: "red",
                 flexDirection: "column",
                 alignItems: "center",
-                padding: 20,
+                paddingTop: 20,
+                paddingRight: 20,
+                paddingLeft: 20
             },
             row: {
                 flexDirection: "row",
                 alignItems: "center"
             },
             head: {
-                marginBottom: 30,
+                marginBottom: 20,
             },
             textInput: {
                 width: appWidth - 139,
@@ -96,9 +106,16 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
             },
             main: {
                 width: appWidth-60,
-                height: appHeight-40-35-30,
+                height: appHeight-40-35-30-3,
                 flexDirection: "column",
+                alignItems: "center",
             },
+            footer: {
+                height: 23,
+                width: appWidth-60,
+                flexDirection: "row",
+                justifyContent: "center",
+            }
         });
 
         return (
@@ -139,6 +156,15 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                             )
                         }
                     </ScrollView>
+                    <View style={styles.footer}>
+                        <Text
+                            style={{
+                                fontSize: 12,
+                            }}
+                        >
+                            Copyright ® 2020 by DeAnti-
+                        </Text>
+                    </View>
                 </View>
             </>
         );

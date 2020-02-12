@@ -31,7 +31,7 @@ export default class Card extends React.Component
                 borderWidth: 1,
                 borderRadius: 3,
                 borderColor: "#aaaaaa",
-                marginBottom: 15,
+                marginBottom: 10,
                 overflow: "hidden",
                 flexDirection: "row",
                 // elevation: 1
@@ -78,7 +78,7 @@ export default class Card extends React.Component
             <View style={styles.container}>
                 <Image
                     style={styles.img}
-                    source={require("./assets/icon.png")}
+                    source={{uri: this.props.img}}
                 />
                 <View style={styles.viewRight}>
                     <View>
