@@ -14,7 +14,7 @@ import Card from "./Card";
 interface listEle {
     singer: string,
     song: string,
-    key: string,
+    ke: string,
     camelot: string,
     bpm: number,
     img: string
@@ -33,18 +33,40 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
         };
     }
 
-    search(value: string) {
-        return [
-
+    componentDidMount(): void {
+        // Test
+        let tmp: Array<listEle> = [
+            {
+                singer: "ONE OK ROCK",
+                song: "完全感覚Dreamer",
+                ke: "F# Minor",
+                camelot: "11A",
+                bpm: 190,
+                img: "https://i.scdn.co/image/ca7bd85fd772ef5298934bed7a1bdf8ef74c94fb"
+            }
         ];
+        this.setState({
+            list: tmp
+        })
+    }
+
+    search(value: string) : Array<listEle> {
+        let list : Array<listEle> = [];
+        // work
+        return list;
     }
 
     _onSearch(): void {
         // alert('test')
+        let content : string = "";
+        this.setState({
+            list: this.search(content)
+        });
     }
 
     render() {
         const appHeight = Math.round(Dimensions.get('window').height);
+        const appWidth = Math.round(Dimensions.get('window').width);
 
         const styles = StyleSheet.create({
             container: {
@@ -64,15 +86,16 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                 marginBottom: 30,
             },
             textInput: {
-                width: "55%",
+                width: appWidth - 139,
                 height: 35,
                 borderWidth: 1,
+                borderRadius: 3,
                 borderColor: "#3B7B9A",
                 marginLeft: 10,
                 marginRight: 10
             },
             main: {
-                width: "100%",
+                width: appWidth-60,
                 height: appHeight-40-35-30,
                 flexDirection: "column",
             },
@@ -108,7 +131,7 @@ export default class App extends React.Component<{},{list: Array<listEle>}> {
                                 <Card
                                     singer={v.singer}
                                     song={v.song}
-                                    key={v.key}
+                                    ke={v.ke}
                                     camelot={v.camelot}
                                     bpm={v.bpm}
                                     img={v.img}
