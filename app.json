@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Tunebat Application for Android write in React-Native with TypeScript",
+    "githubUrl": "https://github.com/DarkKris/Tunebat"
   }
 }
